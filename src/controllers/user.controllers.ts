@@ -15,7 +15,6 @@ export async function create(req:Request, res:Response) {
             data: user,
         });
     } catch (error) {
-        console.log('entrou no catch')
         console.log(error)
         res.status(500).json({
             success: false,
@@ -47,7 +46,6 @@ export async function login(req:Request, res:Response) {
 }
 
 export async function getClients(req:Request, res:Response) {
-    console.log('entrou no get clients')
     try {
         const users = await getAllUsers();
 
@@ -67,7 +65,6 @@ export async function getClients(req:Request, res:Response) {
 }
 
 export async function deleteClient(req:Request, res:Response) {
-    console.log('entrou no delete client')
     try {
         await deleteUser(req.body.id);
 
