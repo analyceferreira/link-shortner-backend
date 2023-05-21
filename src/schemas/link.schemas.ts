@@ -2,9 +2,10 @@ import { z } from 'zod';
 
 
 export const linkSchema = z.object({
-    url: z.string().url('Informe uma URL válida').min(1, 'URL é obrigatória'),
+    original_url: z.string().url('Informe uma URL válida').min(1, 'URL é obrigatória'),
     short_name: z.string().min(3, 'Short name must contain at least 3 characters').max(100, 'Shortned '),
-    userId: z.number(),
+    
+    userId: z.string() || null,
 });
 
 
