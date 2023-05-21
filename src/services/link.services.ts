@@ -1,15 +1,23 @@
 import { User } from "@prisma/client";
 import { prisma } from "../../src/lib/prisma";
+import { LinkSchema } from "../schemas/link.schemas";
 
-export async function createLink(short_name:string, url:string, user:User, hits:number) {
+export async function createLink({short_name, original_url, userId}:LinkSchema) {
+    const conectToUser = userId? {connect: {id: userId}} : {}
     const link = await prisma.link.create({
         data: {
+            original_url,
             short_name,
-            url,
-            user : {connect: {id: user?.id}},
-            hits,
+            short_url: process.env.BASE_URL+short_name,
+            user: conectToUser,
         },
     });
+
+    return link;
+}
+
+export async function getAllLinks() {
+    const link = await prisma.link.findMany();
 
     return link;
 }
@@ -34,23 +42,24 @@ export async function getLinkByUser(user:User) {
     return link;
 }
 
-export async function updateLink(short_name:string, url:string, hits:number) {
+export async function updateLink(short_name:string, originalUrl:string, hits:number) {
     const link = await prisma.link.update({
         where: {
             short_name,
         },
         data: {
             short_name,
-            url,
+            original_url: originalUrl,
             hits,
         },
     });
 }
 
-export async function deleteLink(short_name:string) {
+export async function deleteLinkByShortName(short_name:string) {
     const link = await prisma.link.delete({
         where: {
             short_name,
         },
     });
+    return link
 }
