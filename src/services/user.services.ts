@@ -8,7 +8,7 @@ export async function createUser(userToSave: CreateUserSchema) {
             email: userToSave.email,
         },
     });
-    console.log("userExists")
+    console.log("createUser: userExists")
     console.log(userExists)
     if (!userExists) {
         const user = await prisma.user.create({
@@ -35,7 +35,6 @@ export async function getUserByEmail(userToLogin: LoginUserSchema)  {
 }
 
 export async function getAllUsers() {
-    console.log('Entrou no service')
     const users = await prisma.user.findMany();
 
     return users;

@@ -69,12 +69,11 @@ export async function getClients(req:Request, res:Response) {
 export async function deleteClient(req:Request, res:Response) {
     console.log('entrou no delete client')
     try {
-        const users = await deleteUser(req.body.id);
+        await deleteUser(req.body.id);
 
         res.status(200).json({
             success: true,
             message: 'Delete user successfully',
-            data: users,
         });
     }
     catch (error) {
