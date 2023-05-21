@@ -6,7 +6,12 @@ const userCore  = {
     email: z.string().email('Please inform a valid email address').min(1, 'Email is required')
 }
 
-export const userSchema =  z
+export const userSchema = z.object({
+    ...userCore,
+    password: z.string().min(6, 'Password must be at least 6 characters').max(255),
+})
+
+export const userCreateSchema =  z
     .object({
         ...userCore,
         password: z.string().min(6, 'Password must be at least 6 characters').max(255),
@@ -30,6 +35,7 @@ export const userPathParams = z.object({
 })
 
 
-export type CreateUserSchema = z.infer<typeof userSchema>
+export type UserSchema = z.infer<typeof userSchema>
+export type CreateUserSchema = z.infer<typeof userCreateSchema>
 export type LoginUserSchema = z.infer<typeof userLoginSchema>
 export type UserPathParams = z.infer<typeof userPathParams>

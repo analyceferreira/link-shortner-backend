@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createUser, getAllUsers, getUserByEmail } from '../services/user.services';
+import { createUser, getAllUsers, getUserByEmail, deleteUser } from '../services/user.services';
 import { CreateUserSchema, LoginUserSchema } from '../schemas/user.schemas';
 
 
@@ -15,10 +15,12 @@ export async function create(req:Request, res:Response) {
             data: user,
         });
     } catch (error) {
+        console.log('entrou no catch')
+        console.log(error)
         res.status(500).json({
             success: false,
             message: 'Internal Server Error',
-            data: error,
+            data: (error as Error).message ?? error ,
         });
     }
 }
@@ -52,6 +54,26 @@ export async function getClients(req:Request, res:Response) {
         res.status(200).json({
             success: true,
             message: 'Get users successfully',
+            data: users,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            data: error,
+        });
+    }
+}
+
+export async function deleteClient(req:Request, res:Response) {
+    console.log('entrou no delete client')
+    try {
+        const users = await deleteUser(req.body.id);
+
+        res.status(200).json({
+            success: true,
+            message: 'Delete user successfully',
             data: users,
         });
     }
