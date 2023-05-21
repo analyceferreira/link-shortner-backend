@@ -8,8 +8,6 @@ export async function createUser(userToSave: CreateUserSchema) {
             email: userToSave.email,
         },
     });
-    console.log("userExists")
-    console.log(userExists)
     if (!userExists) {
         const user = await prisma.user.create({
             data: {
@@ -20,7 +18,6 @@ export async function createUser(userToSave: CreateUserSchema) {
         });
         return user;
     }
-    console.log('Gerou o erro')
     throw new Error('User already exists');
 }
 
@@ -35,7 +32,6 @@ export async function getUserByEmail(userToLogin: LoginUserSchema)  {
 }
 
 export async function getAllUsers() {
-    console.log('Entrou no service')
     const users = await prisma.user.findMany();
 
     return users;
