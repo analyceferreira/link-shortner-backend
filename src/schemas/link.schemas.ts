@@ -20,3 +20,5 @@ export const linkPathParams = z.object({
 
 export type LinkSchema = z.infer<typeof linkSchema>
 export type LinkPathParams = z.infer<typeof linkPathParams>
+
+// anfr.me

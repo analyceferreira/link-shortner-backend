@@ -5,15 +5,17 @@ import { LinkSchema } from '../schemas/link.schemas';
 
 export async function create(req:Request, res:Response) {
     const linkToSave: LinkSchema = req.body;
+    const shortName: string = linkToSave.short_name ?? "randomString";
 
     try {
-        const hasLinkWithThisShortName = await getLinkByAlias( linkToSave.short_name)
-        if (hasLinkWithThisShortName) {
-            return res.status(400).json({
-                success: false,
-                message: 'short_name is already in use. Try with another name'
-            });
-        }
+            const hasLinkWithThisShortName = await getLinkByAlias(shortName)
+            if (hasLinkWithThisShortName && linkToSave.short_name) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'short_name is already in use. Try with another name'
+                });
+            }
+
         const link = await createLink( linkToSave );
 
         res.status(201).json({
@@ -68,14 +70,15 @@ export async function deleteLink(req:Request, res:Response) {
 }
 
 export async function redirectToUrl(req:Request, res:Response) {
+    console.log("entrei")
     try {
         const link = await getLinkByAlias(req.params.short_name);
         if(link == null) {
-        res.status(404).json({
-            success: false,
-            message: 'Short link does not exist',
-            data: link,
-        });
+            res.status(404).json({
+                success: false,
+                message: 'Short link does not exist',
+                data: link,
+            });
         } else {
             res.status(302).redirect(link.original_url);
         }
